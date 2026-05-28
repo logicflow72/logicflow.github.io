@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resource Library — LogicFlow</title>
+  <meta name="description" content="Free e-commerce automation resources — marketplace integration guides, workflow templates, pricing playbooks, and API documentation for Walmart, Amazon, Shopify, BestBuy, Wayfair, and WMS." />
+  <meta property="og:title" content="Resource Library — LogicFlow" />
+  <meta property="og:description" content="Free e-commerce automation resources — marketplace integration guides, workflow templates, and pricing playbooks." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Resource Library — LogicFlow" />
+  <meta name="twitter:description" content="Free e-commerce automation resources — marketplace integration guides, workflow templates, and pricing playbooks." />
+  <link rel="icon" href="lf_icon.png" sizes="any" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0a0a0b;
+      color: #e4e4e7;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    ul { list-style: none; }
+    pre, code { font-family: 'JetBrains Mono', monospace; }
+
+    :root {
+      --background: #0a0a0b;
+      --foreground: #e4e4e7;
+      --muted-foreground: #a1a1aa;
+      --card-bg: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --primary: #06b6d4;
+      --primary-hover: #22d3ee;
+      --secondary: rgba(255,255,255,0.05);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .gradient-text {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .neon-glow {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 40px rgba(6, 182, 212, 0.05);
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 10px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: nowrap;
+      color: var(--muted-foreground);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(2px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+    .btn-icon:hover { color: var(--foreground); background: rgba(255,255,255,0.05); }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 11, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-links a {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--muted-foreground);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--foreground); }
+    .nav-links a.active { color: var(--primary); }
+    .nav-mobile-btn {
+      display: none;
+      width: 32px;
+      height: 32px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--foreground);
+      cursor: pointer;
+    }
+    .mobile-drawer {
+      display: none;
+      background: var(--background);
+      border-top: 1px solid var(--border);
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+    }
+    .mobile-drawer.open { display: block; }
+    .mobile-drawer a {
+      display: block;
+      padding: 16px 24px;
+      color: var(--muted-foreground);
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .mobile-drawer a:hover { color: var(--foreground); }
+
+    /* ===== RESOURCES HERO ===== */
+    .resources-hero {
+      padding: 160px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .resources-hero .glow-1 {
+      position: absolute;
+      left: 20%;
+      top: 10%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba(6, 182, 212, 0.06);
+      filter: blur(140px);
+      pointer-events: none;
+    }
+    .resources-hero .glow-2 {
+      position: absolute;
+      right: 20%;
+      bottom: 0;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.06);
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .resources-hero h1 {
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .resources-hero p {
+      max-width: 600px;
+      margin: 0 auto 32px;
+      font-size: 17px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+    }
+    .resource-count {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted-foreground);
+      margin-bottom: 24px;
+    }
+
+    /* ===== RESOURCE CATEGORY ===== */
+    .resource-section {
+      padding: 64px 0;
+    }
+    .resource-section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .resource-section-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .resource-section-icon svg { width: 18px; height: 18px; }
+    .resource-section-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .resource-section-sub {
+      color: var(--muted-foreground);
+      font-size: 15px;
+      margin-bottom: 32px;
+      margin-left: 48px;
+    }
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin: 0 0 40px 0;
+    }
+
+    /* ===== RESOURCE CARDS GRID ===== */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .resource-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .resource-card:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.08);
+    }
+    .resource-card-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      margin-bottom: 16px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .resource-card-icon svg { width: 20px; height: 20px; }
+    .resource-card-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 20px;
+      padding: 0 8px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      width: fit-content;
+    }
+    .resource-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .resource-card p {
+      font-size: 13px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+      margin-bottom: auto;
+      flex: 1;
+    }
+    .resource-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .resource-card-footer .resource-type {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .resource-card-footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--primary);
+      transition: color 0.2s;
+    }
+    .resource-card-footer a svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.2s;
+    }
+    .resource-card-footer a:hover { color: var(--primary-hover); }
+    .resource-card-footer a:hover svg { transform: translateX(2px); }
+
+    /* ===== CTA BANNER ===== */
+    .cta-banner {
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .cta-banner-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .cta-banner h2 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .cta-banner p {
+      color: var(--muted-foreground);
+      font-size: 15px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    footer .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) {
+      footer .footer-inner { flex-direction: row; justify-content: space-between; }
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+    .footer-socials { display: flex; align-items: center; gap: 16px; }
+    .footer-divider { width: 1px; height: 16px; background: var(--border); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1023px) {
+      .resource-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 767px) {
+      .nav-links, .nav-actions { display: none; }
+      .nav-mobile-btn { display: flex; }
+      .resources-hero { padding: 120px 16px 48px; }
+      .resources-hero h1 { font-size: 32px; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .resource-section-title { font-size: 22px; }
+      .resource-section-sub { margin-left: 0; }
+      .cta-banner h2 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body class="bg-grid">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <nav class="container">
+      <a href="index.html" class="logo">
+        <img src="lf_icon.png" alt="LogicFlow" style="height:28px;width:auto;">
+        <span class="gradient-text">LogicFlow</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="resources.html" class="active">Resources</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="nav-actions" style="display:flex;align-items:center;gap:8px;">
+        <a href="index.html#contact" class="btn-primary" style="height:32px;padding:0 12px;font-size:13px;text-decoration:none;">Get Started</a>
+      </div>
+      <button class="nav-mobile-btn" id="menuBtn" aria-label="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+      </button>
+      <div class="mobile-drawer" id="mobileDrawer">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="resources.html">Resources</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== RESOURCES HERO ===== -->
+  <section class="resources-hero">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="container" style="position:relative;z-index:1;">
+      <span class="mono-label">// free resource library</span>
+      <h1>Resource <span class="gradient-text">Library</span></h1>
+      <p>28+ free resources covering Amazon, Walmart, Shopify, BestBuy, Wayfair, and WMS integrations. Playbooks, templates, guides, and API references used by real e-commerce teams.</p>
+      <p class="resource-count">28 resources. Zero paywalls.</p>
+      <a href="#amazon" class="btn-primary neon-glow" style="text-decoration:none;">
+        Browse Resources
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== AMAZON RESOURCES ===== -->
+  <section class="resource-section" id="amazon">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="resource-section-header">
+        <div class="resource-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 3.5-2 6.5-5 8l-5 4-5-4c-3-1.5-5-4.5-5-8A10 10 0 0 1 12 2z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h2 class="resource-section-title">Amazon Seller Central</h2>
+      </div>
+      <p class="resource-section-sub">Guides, templates, and playbooks for automating your Amazon business — from PPC to FBA.</p>
+      <div class="resource-grid">
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(6,182,212,0.1);color:#06b6d4;border-color:rgba(6,182,212,0.2);">Guide</span>
+          <h3>Amazon PPC Automation Playbook</h3>
+          <p>Complete guide to automating your Amazon PPC campaigns. Smart bid optimization, keyword harvesting, and ACOS management workflows.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 24 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border-color:rgba(139,92,246,0.2);">Templates</span>
+          <h3>FBA Restock Calculator</h3>
+          <p>Automated spreadsheet for FBA inventory planning. Calculates optimal restock quantities based on sales velocity and lead times.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Google Sheets</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(34,197,94,0.1);color:#22c55e;border-color:rgba(34,197,94,0.2);">Checklist</span>
+          <h3>New Product Launch Checklist</h3>
+          <p>Step-by-step launch checklist covering listing optimization, initial PPC strategy, review generation, and inventory staging.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Notion &middot; 18 steps</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(249,115,22,0.1);color:#f97316;border-color:rgba(249,115,22,0.2);">Guide</span>
+          <h3>SP-API Integration Reference</h3>
+          <p>Technical guide to Amazon's Selling Partner API. Covers authorization, feed processing, report scheduling, and webhook setup.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Docs &middot; 42 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(236,72,153,0.1);color:#ec4899;border-color:rgba(236,72,153,0.2);">Playbook</span>
+          <h3>Review Management Playbook</h3>
+          <p>Automated review monitoring, response templates, and escalation workflows. Keep your product ratings healthy at scale.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 16 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(234,179,8,0.1);color:#eab308;border-color:rgba(234,179,8,0.2);">Template</span>
+          <h3>A+ Content Generator</h3>
+          <p>AI-powered A+ content module templates. Pre-built layouts for premium product descriptions, comparison charts, and brand stories.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Canva + AI</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WALMART RESOURCES ===== -->
+  <section class="resource-section" id="walmart">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="resource-section-header">
+        <div class="resource-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h2 class="resource-section-title">Walmart Marketplace</h2>
+      </div>
+      <p class="resource-section-sub">Everything you need to win on Walmart — listing optimization, repricing, and ad management workflows.</p>
+      <div class="resource-grid">
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(6,182,212,0.1);color:#06b6d4;border-color:rgba(6,182,212,0.2);">Guide</span>
+          <h3>Walmart Seller Setup Guide</h3>
+          <p>Complete walkthrough for onboarding as a Walmart Marketplace seller. Covers application, item setup, shipping templates, and compliance.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 32 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border-color:rgba(139,92,246,0.2);">Playbook</span>
+          <h3>Buy Box Optimization Playbook</h3>
+          <p>Win the Walmart buy box with automated repricing, fulfillment performance tracking, and competitive analysis workflows.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 20 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(34,197,94,0.1);color:#22c55e;border-color:rgba(34,197,94,0.2);">Template</span>
+          <h3>Walmart Feed Processor</h3>
+          <p>Automated feed management template for item, price, and inventory updates. Handles bulk submissions and error resolution.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Template</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SHOPIFY RESOURCES ===== -->
+  <section class="resource-section" id="shopify">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="resource-section-header">
+        <div class="resource-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h2 class="resource-section-title">Shopify Sales Engine</h2>
+      </div>
+      <p class="resource-section-sub">Marketing automation, abandoned cart recovery, and multi-channel analytics for Shopify merchants.</p>
+      <div class="resource-grid">
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(6,182,212,0.1);color:#06b6d4;border-color:rgba(06,182,212,0.2);">Playbook</span>
+          <h3>Email Flow Automation Playbook</h3>
+          <p>Build high-converting email flows: welcome series, abandoned cart, post-purchase upsells, and re-engagement campaigns.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 28 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border-color:rgba(139,92,246,0.2);">Template</span>
+          <h3>Klaviyo Flow Templates</h3>
+          <p>Pre-built Klaviyo flow templates for Shopify. Import-ready segments, email designs, and A/B test frameworks.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Klaviyo</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(34,197,94,0.1);color:#22c55e;border-color:rgba(34,197,94,0.2);">Guide</span>
+          <h3>Multi-Channel Analytics Setup</h3>
+          <p>Connect Shopify data with Amazon, Walmart, and Wayfair sales. Unified dashboard for cross-platform revenue tracking.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Guide</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BESTBUY & WAYFAIR ===== -->
+  <section class="resource-section" id="retail">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="resource-section-header">
+        <div class="resource-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h2 class="resource-section-title">BestBuy &amp; Wayfair</h2>
+      </div>
+      <p class="resource-section-sub">Specialized resources for BestBuy Marketplace and Wayfair Supplier integration and optimization.</p>
+      <div class="resource-grid">
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(6,182,212,0.1);color:#06b6d4;border-color:rgba(6,182,212,0.2);">Guide</span>
+          <h3>BestBuy Marketplace Onboarding</h3>
+          <p>Step-by-step guide to becoming a BestBuy Marketplace seller. Application tips, category approval, and listing best practices.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 22 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border-color:rgba(139,92,246,0.2);">Playbook</span>
+          <h3>Wayfair Supplier Playbook</h3>
+          <p>Optimize your Wayfair catalog with automated product feeds, pricing strategies, and order fulfillment workflows.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 18 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(34,197,94,0.1);color:#22c55e;border-color:rgba(34,197,94,0.2);">Template</span>
+          <h3>Price Match Automation Template</h3>
+          <p>Track competitor pricing across BestBuy and Wayfair. Automated repricing rules with margin floor protection.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">Template</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WMS & OPEN APIS ===== -->
+  <section class="resource-section" id="wms">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="resource-section-header">
+        <div class="resource-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h2 class="resource-section-title">WMS &amp; Open APIs</h2>
+      </div>
+      <p class="resource-section-sub">Warehouse management integrations, REST API references, and real-time inventory sync patterns.</p>
+      <div class="resource-grid">
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(6,182,212,0.1);color:#06b6d4;border-color:rgba(6,182,212,0.2);">Guide</span>
+          <h3>WMS Integration Blueprint</h3>
+          <p>Architecture patterns for connecting any WMS to multiple sales channels. Real-time inventory, order routing, and error handling.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 36 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border-color:rgba(139,92,246,0.2);">Docs</span>
+          <h3>LogicFlow REST API Reference</h3>
+          <p>Complete API documentation for the LogicFlow platform. Authentication, endpoints, webhooks, and rate limiting.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">OpenAPI 3.0</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="glass-card resource-card">
+          <span class="resource-card-badge" style="background:rgba(34,197,94,0.1);color:#22c55e;border-color:rgba(34,197,94,0.2);">Playbook</span>
+          <h3>Multi-Channel Inventory Sync</h3>
+          <p>Keep inventory consistent across Amazon, Walmart, Shopify, and your WMS. Conflict resolution and safety buffer strategies.</p>
+          <div class="resource-card-footer">
+            <span class="resource-type">PDF &middot; 14 pages</span>
+            <a href="#">Access <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="cta-banner">
+    <div class="cta-banner-inner">
+      <h2>Need a custom <span class="gradient-text">workflow</span>?</h2>
+      <p>Every resource here is powered by LogicFlow. If you need a custom automation for your specific marketplace setup, we build it for you.</p>
+      <a href="index.html#contact" class="btn-primary neon-glow" style="text-decoration:none;height:48px;padding:0 28px;font-size:15px;">
+        Book a Strategy Call
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <p style="display:flex;align-items:center;gap:8px;">
+        <img src="lf_icon.png" alt="" style="height:16px;width:auto;">
+        &copy; 2026 LogicFlow. All rights reserved.
+      </p>
+      <div class="footer-socials">
+        <a href="resources.html" style="font-family:var(--font-mono);font-size:12px;color:var(--muted-foreground);transition:color 0.2s;text-decoration:none;">Resources</a>
+        <div class="footer-divider"></div>
+        <a href="index.html" style="font-family:var(--font-mono);font-size:12px;color:var(--muted-foreground);transition:color 0.2s;text-decoration:none;">Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('mobileDrawer');
+    if (menuBtn && drawer) {
+      menuBtn.addEventListener('click', function() {
+        drawer.classList.toggle('open');
+      });
+      drawer.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          drawer.classList.remove('open');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

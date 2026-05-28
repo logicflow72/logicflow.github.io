@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LogicFlow — AI Workflow Developer</title>
+  <meta name="description" content="LogicFlow — build AI-powered workflows with a visual pipeline editor, model-agnostic runtime, and edge-native deployment." />
+  <meta property="og:title" content="LogicFlow — AI Workflow Developer" />
+  <meta property="og:description" content="Build AI-powered workflows with a visual pipeline editor, model-agnostic runtime, and edge-native deployment." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="LogicFlow — AI Workflow Developer" />
+  <meta name="twitter:description" content="Build AI-powered workflows with a visual pipeline editor, model-agnostic runtime, and edge-native deployment." />
+  <link rel="icon" href="lf_icon.png" sizes="any" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0a0a0b;
+      color: #e4e4e7;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    ul { list-style: none; }
+    pre, code { font-family: 'JetBrains Mono', monospace; }
+
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --background: #0a0a0b;
+      --foreground: #e4e4e7;
+      --muted-foreground: #a1a1aa;
+      --card-bg: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --primary: #06b6d4;
+      --primary-hover: #22d3ee;
+      --secondary: rgba(255,255,255,0.05);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* ===== UTILITY ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    .gradient-text {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .section-title {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    /* ===== GRID BACKGROUND ===== */
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ===== GLOW EFFECT ===== */
+    .neon-glow {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 40px rgba(6, 182, 212, 0.05);
+    }
+
+    /* ===== GLASS CARD ===== */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    /* ===== BADGE ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 20px;
+      padding: 0 8px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: nowrap;
+      color: var(--muted-foreground);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+    .btn-icon:hover { color: var(--foreground); background: rgba(255,255,255,0.05); }
+
+    /* ================================================================
+       HEADER
+    ================================================================ */
+    header {
+      position: fixed;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 11, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-links a {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--muted-foreground);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--foreground); }
+    .nav-mobile-btn {
+      display: none;
+      width: 32px;
+      height: 32px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--foreground);
+      cursor: pointer;
+    }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      display: none;
+      background: var(--background);
+      border-top: 1px solid var(--border);
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+    }
+    .mobile-drawer.open { display: block; }
+    .mobile-drawer a {
+      display: block;
+      padding: 16px 24px;
+      color: var(--muted-foreground);
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .mobile-drawer a:hover { color: var(--foreground); }
+
+    /* ================================================================
+       HERO
+    ================================================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: 0 24px;
+      padding-top: 64px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,11,0.2) 0%, rgba(10,10,11,0.6) 60%, rgba(10,10,11,1) 100%);
+    }
+    .hero-glow-1 {
+      position: absolute;
+      left: 25%;
+      top: 25%;
+      width: 384px;
+      height: 384px;
+      border-radius: 50%;
+      background: rgba(6, 182, 212, 0.08);
+      filter: blur(120px);
+    }
+    .hero-glow-2 {
+      position: absolute;
+      right: 25%;
+      bottom: 25%;
+      width: 384px;
+      height: 384px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.08);
+      filter: blur(120px);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 768px;
+      text-align: center;
+    }
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      font-size: 13px;
+      backdrop-filter: blur(4px);
+      margin-bottom: 32px;
+    }
+    .hero-status .dot {
+      position: relative;
+      width: 8px;
+      height: 8px;
+    }
+    .hero-status .dot span {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+    .hero-status .dot .pulse {
+      animation: ping 2s infinite;
+      opacity: 0.75;
+    }
+    @keyframes ping {
+      0% { transform: scale(1); opacity: 0.75; }
+      75%, 100% { transform: scale(2.5); opacity: 0; }
+    }
+    .hero-status .dot .solid {
+      position: relative;
+    }
+    .hero h1 {
+      font-size: 72px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .hero-handle {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--muted-foreground);
+      margin-bottom: 24px;
+    }
+    .hero p {
+      max-width: 640px;
+      margin: 0 auto 40px;
+      font-size: 20px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .hero-actions .social-links {
+      display: flex;
+      gap: 8px;
+    }
+    .scroll-indicator {
+      margin-top: 80px;
+    }
+    .scroll-indicator a {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+      transition: color 0.2s;
+    }
+    .scroll-indicator a:hover { color: var(--foreground); }
+
+    /* ================================================================
+       SECTION COMMON
+    ================================================================ */
+    section { padding: 128px 24px; }
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .section-header .mono-label { margin-bottom: 16px; display: inline-block; }
+    .section-header p {
+      max-width: 640px;
+      margin: 0 auto;
+      color: var(--muted-foreground);
+    }
+
+    /* ================================================================
+       ABOUT
+    ================================================================ */
+    .about-grid {
+      display: grid;
+      gap: 48px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .about-left { display: flex; flex-direction: column; gap: 24px; }
+    .about-image-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .about-image-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-family: var(--font-mono);
+      font-size: 14px;
+    }
+    .terminal-card {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      overflow: hidden;
+    }
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-dot.red { background: rgba(239,68,68,0.7); }
+    .terminal-dot.yellow { background: rgba(234,179,8,0.7); }
+    .terminal-dot.green { background: rgba(34,197,94,0.7); }
+    .terminal-label {
+      margin-left: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .terminal-body {
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--muted-foreground);
+    }
+    .terminal-body .highlight { color: var(--primary); }
+
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+    .about-text p {
+      color: var(--muted-foreground);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .stat-card {
+      text-align: center;
+      padding: 16px;
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+      margin-top: 4px;
+    }
+
+    /* ================================================================
+       PROJECTS
+    ================================================================ */
+    .projects-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      height: 100%;
+      cursor: pointer;
+    }
+    .project-card-glow {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .project-card:hover .project-card-glow { opacity: 1; }
+    .project-card-content { position: relative; }
+    .project-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
+    .project-icon svg { width: 20px; height: 20px; }
+    .project-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .project-card p {
+      font-size: 13px;
+      color: var(--muted-foreground);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* ================================================================
+       SKILLS
+    ================================================================ */
+    .skills-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .skill-card { padding: 24px; height: 100%; }
+    .skill-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .skill-card-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      color: var(--primary);
+    }
+    .skill-card-icon svg { width: 20px; height: 20px; }
+    .skill-card h3 { font-size: 15px; font-weight: 600; }
+    .skill-item { margin-bottom: 16px; }
+    .skill-item:last-child { margin-bottom: 0; }
+    .skill-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .skill-item-header span:first-child {
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .skill-item-header span:last-child {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .skill-bar {
+      height: 6px;
+      border-radius: 9999px;
+      background: var(--secondary);
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, var(--primary), #8b5cf6);
+      width: 0;
+      transition: width 1s ease;
+    }
+
+    /* ================================================================
+       TIMELINE
+    ================================================================ */
+    .timeline { max-width: 768px; margin: 0 auto; position: relative; }
+    .timeline-line {
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--primary), rgba(139,92,246,0.5), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-left: 48px;
+      margin-bottom: 48px;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: 13px;
+      top: 24px;
+      z-index: 10;
+      width: 14px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      background: var(--background);
+    }
+    .timeline-dot-inner {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    .timeline-card { padding: 24px; }
+    .timeline-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .timeline-meta svg { width: 16px; height: 16px; color: var(--primary); }
+    .timeline-meta span {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--primary);
+    }
+    .timeline-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .timeline-role { font-size: 14px; color: var(--muted-foreground); margin-bottom: 12px; }
+    .timeline-desc { font-size: 14px; color: var(--muted-foreground); line-height: 1.7; margin-bottom: 16px; }
+    .timeline-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* ================================================================
+       BLOG
+    ================================================================ */
+    .blog-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .blog-card {
+      padding: 24px;
+      cursor: pointer;
+      height: 100%;
+    }
+    .blog-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .blog-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+    .blog-card:hover h3 { color: var(--primary); }
+    .blog-card p {
+      font-size: 13px;
+      color: var(--muted-foreground);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .blog-meta .clock { display: flex; align-items: center; gap: 4px; }
+    .blog-meta .clock svg { width: 12px; height: 12px; }
+    .blog-arrow {
+      width: 16px;
+      height: 16px;
+      color: var(--muted-foreground);
+      transition: transform 0.2s, color 0.2s;
+    }
+    .blog-card:hover .blog-arrow {
+      transform: translate(2px, -2px);
+      color: var(--primary);
+    }
+
+    /* ================================================================
+       CONTACT
+    ================================================================ */
+    .contact-inner { max-width: 640px; margin: 0 auto; }
+    .contact-card { padding: 32px; text-align: center; }
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      color: var(--primary);
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+    .contact-email:hover { color: var(--foreground); }
+    .contact-email svg { width: 20px; height: 20px; }
+    .contact-email .arrow {
+      width: 16px;
+      height: 16px;
+      opacity: 0;
+      transition: all 0.2s;
+    }
+    .contact-email:hover .arrow { opacity: 1; transform: translate(2px, -2px); }
+    .contact-socials {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    /* ================================================================
+       FOOTER
+    ================================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    footer .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) {
+      footer .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+    .footer-socials { display: flex; align-items: center; gap: 16px; }
+    .footer-divider { width: 1px; height: 16px; background: var(--border); }
+
+    /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+    @media (max-width: 1023px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+      .skills-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 767px) {
+      .nav-links, .nav-actions { display: none; }
+      .nav-mobile-btn { display: flex; }
+
+      .hero h1 { font-size: 40px; }
+      .hero p { font-size: 17px; }
+      section { padding: 80px 16px; }
+      .section-title { font-size: 28px; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+
+      .timeline-line { left: 15px; }
+      .timeline-dot { left: 9px; width: 12px; height: 12px; }
+      .timeline-dot-inner { width: 5px; height: 5px; }
+      .timeline-item { padding-left: 40px; }
+    }
+  </style>
+</head>
+<body class="bg-grid">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <nav class="container">
+      <a href="#" class="logo" style="display:flex;align-items:center;gap:10px;">
+        <img src="lf_icon.png" alt="LogicFlow" style="height:28px;width:auto;">
+        <span class="gradient-text">LogicFlow</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+        <a href="resources.html">Resources</a>
+      </div>
+      <div class="nav-actions" style="display:flex;align-items:center;gap:8px;">
+        <button class="btn-icon" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+          </svg>
+        </button>
+        <button class="btn-primary" style="height:32px;padding:0 12px;font-size:13px;">Get Started</button>
+      </div>
+      <button class="nav-mobile-btn" id="menuBtn" aria-label="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+      </button>
+      <div class="mobile-drawer" id="mobileDrawer">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+        <a href="resources.html">Resources</a>
+        <a href="#">Get Started</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div style="width:100%;height:100%;background:#0f172a;position:absolute;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center, #1e293b 0%, #0a0a0b 100%);"></div>
+      </div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+
+    <div class="hero-content">
+      <div class="hero-status">
+        <div class="dot">
+          <span class="pulse"></span>
+          <span class="solid"></span>
+        </div>
+        Now in Public Beta
+      </div>
+
+      <h1>
+        Logic<span class="gradient-text">Flow</span>
+      </h1>
+      <p class="hero-handle">@logicflow</p>
+      <p>
+        E-commerce automation for the world's largest retail platforms — build, deploy, and monitor intelligent sales &amp; marketing workflows that drive revenue.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary neon-glow">View Projects</a>
+        <a href="#contact" class="btn-secondary">Get in Touch</a>
+        <div class="social-links">
+          <a href="#" class="btn-icon" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+            </svg>
+          </a>
+          <a href="#" class="btn-icon" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <a href="#about">
+          <span>scroll</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono-label">// about</span>
+        <h2 class="section-title">Automating Retail at Scale</h2>
+        <p>Not just experiments — revenue-driving sales workflows that connect every major marketplace.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-left">
+          <div class="about-image-wrap">
+            <div class="about-image-placeholder">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+          </div>
+          <div class="terminal-card">
+            <div class="terminal-header">
+              <div class="terminal-dot red"></div>
+              <div class="terminal-dot yellow"></div>
+              <div class="terminal-dot green"></div>
+              <span class="terminal-label">terminal</span>
+            </div>
+            <div class="terminal-body">
+              <code>$ whoami<br>&gt; <span class="highlight">LogicFlow</span><br><br>$ cat capabilities.txt<br>&gt; marketplace_integration<br>&gt; sales_automation<br>&gt; multi_channel_sync<br>&gt; pricing_intelligence<br>&gt; wms_connectivity<br><br>$ echo $STATUS<br>&gt; <span class="highlight">powering retailers</span></code>
+            </div>
+          </div>
+        </div>
+        <div class="about-right">
+          <div class="about-text">
+            <p>LogicFlow is an e-commerce automation platform built for sales and marketing teams who need precision across every retail channel. We connect directly to Walmart, Amazon, Shopify, BestBuy, Wayfair, and any WMS — transforming manual workflows into automated revenue engines.</p>
+            <p>Our platform handles listing optimization, dynamic pricing, ad management, inventory sync, and multi-channel analytics. We believe the best automation isn't the most complex — it's the one that reliably ships revenue to your bottom line.</p>
+            <p>When we're not building new marketplace integrations or optimizing pricing algorithms, we're helping retailers scale their operations across the entire e-commerce ecosystem.</p>
+          </div>
+          <div class="stats-grid">
+            <div class="glass-card stat-card">
+              <p class="stat-number">$2B+</p>
+              <p class="stat-label">Revenue Automated</p>
+            </div>
+            <div class="glass-card stat-card">
+              <p class="stat-number">99.9%</p>
+              <p class="stat-label">Uptime SLA</p>
+            </div>
+            <div class="glass-card stat-card">
+              <p class="stat-number">6</p>
+              <p class="stat-label">Marketplaces</p>
+            </div>
+            <div class="glass-card stat-card">
+              <p class="stat-number">∞</p>
+              <p class="stat-label">API Integrations</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono-label">// projects</span>
+        <h2 class="section-title">What We've Built</h2>
+        <p>Sales &amp; marketing automation workflows for the world's largest retail platforms.</p>
+      </div>
+      <div class="projects-grid">
+        <div class="glass-card project-card">
+          <div class="project-card-glow" style="background:linear-gradient(135deg, rgba(6,182,212,0.1), rgba(59,130,246,0.1));"></div>
+          <div class="project-card-content">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Walmart Marketplace</h3>
+            <p>Automated listing optimization, repricing, and ad management for Walmart sellers. AI-driven buy box analysis and inventory syncing reduce manual work by 85%.</p>
+            <div class="project-tags">
+              <span class="badge">Walmart API</span>
+              <span class="badge">Pricing AI</span>
+              <span class="badge">Inventory Sync</span>
+              <span class="badge">Ad Manager</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card project-card">
+          <div class="project-card-glow" style="background:linear-gradient(135deg, rgba(139,92,246,0.1), rgba(217,70,239,0.1));"></div>
+          <div class="project-card-content">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 3.5-2 6.5-5 8l-5 4-5-4c-3-1.5-5-4.5-5-8A10 10 0 0 1 12 2z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <h3>Amazon Seller Central</h3>
+            <p>End-to-end Amazon workflow automation: Listing creation, PPC bid optimization, FBA restock alerts, review monitoring, and A+ content generation.</p>
+            <div class="project-tags">
+              <span class="badge">Selling Partner API</span>
+              <span class="badge">PPC Optimizer</span>
+              <span class="badge">FBA Alerts</span>
+              <span class="badge">Review AI</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card project-card">
+          <div class="project-card-glow" style="background:linear-gradient(135deg, rgba(34,197,94,0.1), rgba(16,185,129,0.1));"></div>
+          <div class="project-card-content">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3>Shopify Sales Engine</h3>
+            <p>Multi-channel marketing automation for Shopify stores — email flows, abandoned cart recovery, upsell campaigns, and cross-platform analytics dashboards.</p>
+            <div class="project-tags">
+              <span class="badge">Shopify API</span>
+              <span class="badge">Email Flows</span>
+              <span class="badge">Klaviyo</span>
+              <span class="badge">Analytics</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card project-card">
+          <div class="project-card-glow" style="background:linear-gradient(135deg, rgba(249,115,22,0.1), rgba(220,38,38,0.1));"></div>
+          <div class="project-card-content">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </div>
+            <h3>BestBuy Integration</h3>
+            <p>Marketplace listing automation, real-time price matching, promotion scheduling, and inventory compliance workflows for BestBuy's marketplace sellers.</p>
+            <div class="project-tags">
+              <span class="badge">Marketplace API</span>
+              <span class="badge">Price Match</span>
+              <span class="badge">Promotions</span>
+              <span class="badge">Compliance</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card project-card">
+          <div class="project-card-glow" style="background:linear-gradient(135deg, rgba(236,72,153,0.1), rgba(139,92,246,0.1));"></div>
+          <div class="project-card-content">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/><path d="M12 3v6"/></svg>
+            </div>
+            <h3>Wayfair Supplier Hub</h3>
+            <p>Product feed optimization, order fulfillment automation, dynamic pricing models, and catalog management tailored for Wayfair's supplier ecosystem.</p>
+            <div class="project-tags">
+              <span class="badge">Feed API</span>
+              <span class="badge">Fulfillment</span>
+              <span class="badge">Dynamic Pricing</span>
+              <span class="badge">Catalog</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card project-card">
+          <div class="project-card-glow" style="background:linear-gradient(135deg, rgba(234,179,8,0.1), rgba(249,115,22,0.1));"></div>
+          <div class="project-card-content">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3>WMS &amp; Open APIs</h3>
+            <p>Warehouse management system integrations with real-time inventory sync across all marketplaces. Open REST APIs for custom workflow extensions.</p>
+            <div class="project-tags">
+              <span class="badge">WMS</span>
+              <span class="badge">REST API</span>
+              <span class="badge">Webhooks</span>
+              <span class="badge">Multi-Channel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono-label">// skills</span>
+        <h2 class="section-title">Our Stack</h2>
+        <p>The platforms and technologies we integrate with daily.</p>
+      </div>
+      <div class="skills-grid">
+        <div class="glass-card skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Marketplace Integrations</h3>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Amazon SP-API</span><span>95%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Walmart API</span><span>90%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Shopify Admin</span><span>92%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:92%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>BestBuy Marketplace</span><span>85%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Wayfair Supplier</span><span>82%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:82%"></div></div>
+          </div>
+        </div>
+        <div class="glass-card skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 3.5-2 6.5-5 8l-5 4-5-4c-3-1.5-5-4.5-5-8A10 10 0 0 1 12 2z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <h3>Sales &amp; Marketing</h3>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>PPC / Advertising</span><span>93%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:93%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Dynamic Pricing</span><span>90%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Email Automation</span><span>88%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:88%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Analytics &amp; BI</span><span>87%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:87%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>SEO / Content</span><span>80%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div>
+          </div>
+        </div>
+        <div class="glass-card skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3>Infrastructure</h3>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>WMS Integration</span><span>90%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>REST / GraphQL APIs</span><span>95%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Inventory Sync</span><span>88%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:88%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Order Fulfillment</span><span>85%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-header"><span>Data Pipelines</span><span>83%</span></div>
+            <div class="skill-bar"><div class="skill-bar-fill" style="width:83%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono-label">// experience</span>
+        <h2 class="section-title">Our Track Record</h2>
+        <p>From marketplace integrations to powering enterprise retail operations.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+          <div class="glass-card timeline-card">
+            <div class="timeline-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+              <span>2024 — Present</span>
+            </div>
+            <h3>LogicFlow</h3>
+            <p class="timeline-role">Founder &amp; CEO</p>
+            <p class="timeline-desc">Building the e-commerce automation platform. Leading product, engineering, and go-to-market. Grew from zero to automating $2B+ in annual revenue.</p>
+            <div class="timeline-tags">
+              <span class="badge">Product</span>
+              <span class="badge">Marketplaces</span>
+              <span class="badge">API Design</span>
+              <span class="badge">Sales</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item" style="flex-direction:row-reverse;">
+          <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+          <div class="glass-card timeline-card">
+            <div class="timeline-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+              <span>2022 — 2024</span>
+            </div>
+            <h3>Amazon</h3>
+            <p class="timeline-role">Senior Marketplace Engineer</p>
+            <p class="timeline-desc">Led the development of third-party seller automation tools. Built SP-API integrations used by 10k+ sellers for inventory and order management.</p>
+            <div class="timeline-tags">
+              <span class="badge">SP-API</span>
+              <span class="badge">FBA</span>
+              <span class="badge">Python</span>
+              <span class="badge">DynamoDB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+          <div class="glass-card timeline-card">
+            <div class="timeline-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+              <span>2020 — 2022</span>
+            </div>
+            <h3>Shopify</h3>
+            <p class="timeline-role">Partner Integrations Lead</p>
+            <p class="timeline-desc">Designed and scaled the partner API integration framework. Onboarded 500+ third-party apps and built the webhook event system used by millions of merchants.</p>
+            <div class="timeline-tags">
+              <span class="badge">GraphQL</span>
+              <span class="badge">Webhooks</span>
+              <span class="badge">Ruby</span>
+              <span class="badge">Redis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item" style="flex-direction:row-reverse;">
+          <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+          <div class="glass-card timeline-card">
+            <div class="timeline-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+              <span>2019 — 2020</span>
+            </div>
+            <h3>Walmart Global Tech</h3>
+            <p class="timeline-role">Marketplace API Engineer</p>
+            <p class="timeline-desc">Contributed to the Walmart Marketplace API platform. Built feed processing pipelines and real-time inventory sync for thousands of suppliers.</p>
+            <div class="timeline-tags">
+              <span class="badge">Java</span>
+              <span class="badge">Feed API</span>
+              <span class="badge">Kafka</span>
+              <span class="badge">Docker</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOG ===== -->
+  <section id="blog">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono-label">// blog</span>
+        <h2 class="section-title">Writing &amp; Thinking</h2>
+        <p>Thoughts on e-commerce automation, marketplace strategy, and scaling retail operations.</p>
+      </div>
+      <div class="blog-grid">
+        <div class="glass-card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">Amazon</span>
+            <svg class="blog-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </div>
+          <h3>How to Automate Amazon PPC Without Burning Budget</h3>
+          <p>Smart bid optimization strategies that let AI manage your ad spend across campaigns while keeping ACOS in check.</p>
+          <div class="blog-meta">
+            <span>Mar 2026</span>
+            <span class="clock">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              8 min read
+            </span>
+          </div>
+        </div>
+        <div class="glass-card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">Multi-Channel</span>
+            <svg class="blog-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </div>
+          <h3>Selling on 6 Marketplaces: A Practical Integration Guide</h3>
+          <p>How to manage inventory, pricing, and orders across Amazon, Walmart, Shopify, BestBuy, Wayfair, and your own site without losing your mind.</p>
+          <div class="blog-meta">
+            <span>Jan 2026</span>
+            <span class="clock">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              12 min read
+            </span>
+          </div>
+        </div>
+        <div class="glass-card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">WMS</span>
+            <svg class="blog-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </div>
+          <h3>WMS Integration Without the Headache: A Blueprint</h3>
+          <p>Lessons from connecting warehouse management systems to 6+ sales channels. Real-time inventory sync, order routing, and error handling patterns.</p>
+          <div class="blog-meta">
+            <span>Nov 2025</span>
+            <span class="clock">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              6 min read
+            </span>
+          </div>
+        </div>
+        <div class="glass-card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">Pricing</span>
+            <svg class="blog-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </div>
+          <h3>Dynamic Pricing Algorithms for Modern Retail</h3>
+          <p>From rule-based repricing to ML-driven optimization — what works for buy box strategy across Amazon and Walmart in 2025.</p>
+          <div class="blog-meta">
+            <span>Sep 2025</span>
+            <span class="clock">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              10 min read
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono-label">// contact</span>
+        <h2 class="section-title">Let's Build Something</h2>
+        <p>Have a project in mind? We're always open to discussing new marketplace integrations.</p>
+      </div>
+      <div class="contact-inner">
+        <div class="glass-card contact-card">
+          <a href="mailto:info@logicflow.ca" class="contact-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+            info@logicflow.ca
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+          <div class="contact-socials">
+            <a href="#" class="btn-secondary" style="gap:8px;">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/></svg>
+              GitHub
+            </a>
+            <a href="#" class="btn-secondary" style="gap:8px;">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              Twitter
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <p style="display:flex;align-items:center;gap:8px;">
+        <img src="lf_icon.png" alt="" style="height:16px;width:auto;">
+        &copy; 2026 LogicFlow. All rights reserved.
+      </p>
+      <div class="footer-socials">
+        <a href="#" class="btn-icon" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+          </svg>
+        </a>
+        <div class="footer-divider"></div>
+        <a href="#" class="btn-icon" aria-label="Twitter">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('mobileDrawer');
+    if (menuBtn && drawer) {
+      menuBtn.addEventListener('click', function() {
+        drawer.classList.toggle('open');
+      });
+      drawer.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          drawer.classList.remove('open');
+        });
+      });
+    }
+
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'none';
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('[style*="opacity:0"]').forEach(function(el) {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

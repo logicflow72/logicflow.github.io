@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Education — LogicFlow</title>
+  <meta name="description" content="Corporate AI training courses covering Open Source, APIs, Claude Skills, Workflow Automation, AI Strategy, and more." />
+  <link rel="icon" href="lf_icon.png" sizes="any" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0a0a0b;
+      color: #e4e4e7;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    ul { list-style: none; }
+    pre, code { font-family: 'JetBrains Mono', monospace; }
+
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --background: #0a0a0b;
+      --foreground: #e4e4e7;
+      --muted-foreground: #a1a1aa;
+      --card-bg: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --primary: #06b6d4;
+      --primary-hover: #22d3ee;
+      --secondary: rgba(255,255,255,0.05);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* ===== UTILITY ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .gradient-text {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .section-title {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    /* ===== GRID BACKGROUND ===== */
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ===== GLASS CARD ===== */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    /* ===== BADGE ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 20px;
+      padding: 0 8px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: nowrap;
+      color: var(--muted-foreground);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ================================================================
+       HEADER
+    ================================================================ */
+    header {
+      position: fixed;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 11, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-links a {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--muted-foreground);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--foreground); }
+    .nav-mobile-btn {
+      display: none;
+      width: 32px;
+      height: 32px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--foreground);
+      cursor: pointer;
+    }
+    .mobile-drawer {
+      display: none;
+      background: var(--background);
+      border-top: 1px solid var(--border);
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+    }
+    .mobile-drawer.open { display: block; }
+    .mobile-drawer a {
+      display: block;
+      padding: 16px 24px;
+      color: var(--muted-foreground);
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .mobile-drawer a:hover { color: var(--foreground); }
+
+    /* ================================================================
+       PAGE HEADER
+    ================================================================ */
+    .page-header {
+      padding: 128px 24px 64px;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .page-header p {
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 18px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+    }
+    .page-header .mono-label {
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    /* ================================================================
+       COURSES SECTION
+    ================================================================ */
+    .courses-section {
+      padding: 0 24px 128px;
+    }
+    .courses-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .course-card {
+      padding: 24px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .course-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .course-card-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .course-card-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+    .course-meta-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .course-number {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+    .course-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      transition: color 0.2s;
+    }
+    .course-card:hover h3 { color: var(--primary); }
+    .course-tagline {
+      font-size: 13px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+    .course-meta-bottom {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+      margin-top: auto;
+    }
+    .course-meta-bottom .sep {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    /* ================================================================
+       CURRICULUM MODAL / EXPAND
+    ================================================================ */
+    .course-topics {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .course-card.expanded .course-topics { display: block; }
+    .course-topics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .topic-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted-foreground);
+      line-height: 1.5;
+    }
+    .topic-item .num {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .expand-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--primary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: opacity 0.2s;
+      margin-top: 8px;
+    }
+    .expand-btn:hover { opacity: 0.7; }
+    .expand-btn svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.2s;
+    }
+    .course-card.expanded .expand-btn svg {
+      transform: rotate(180deg);
+    }
+    .course-card .course-description {
+      font-size: 13px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .course-card.expanded .course-description { display: block; }
+
+    /* ================================================================
+       FOOTER
+    ================================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    footer .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) {
+      footer .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+
+    /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+    @media (max-width: 1023px) {
+      .courses-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .nav-mobile-btn { display: flex; }
+      .nav-actions { display: none; }
+
+      .page-header { padding: 104px 16px 40px; }
+      .page-header h1 { font-size: 32px; }
+      .page-header p { font-size: 15px; }
+      .section-title { font-size: 28px; }
+      .courses-section { padding: 0 16px 80px; }
+    }
+  </style>
+</head>
+<body class="bg-grid">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <nav class="container">
+      <a href="index.html" class="logo">
+        <img src="lf_icon.png" alt="LogicFlow" style="height:28px;width:auto;">
+        <span class="gradient-text">LogicFlow</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="education.html" style="color:var(--foreground);">Education</a>
+      </div>
+      <button class="nav-mobile-btn" id="menuBtn" aria-label="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+      </button>
+      <div class="mobile-drawer" id="mobileDrawer">
+        <a href="index.html">Home</a>
+        <a href="education.html" style="color:var(--foreground);">Education</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="page-header">
+    <div class="container">
+      <span class="mono-label">// education</span>
+      <h1 class="gradient-text">Corporate AI Training</h1>
+      <p>Eight courses spanning open source fundamentals to autonomous AI agents. Built for real teams, taught by practitioners.</p>
+    </div>
+  </section>
+
+  <!-- ===== COURSES ===== -->
+  <section class="courses-section">
+    <div class="container">
+      <div class="courses-grid" id="coursesGrid">
+        <!-- Injected by JS below -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <p>&copy; 2026 LogicFlow. All rights reserved.</p>
+      <div class="footer-socials">
+        <a href="index.html" style="font-family:var(--font-mono);font-size:12px;color:var(--muted-foreground);transition:color 0.2s;">Back to LogicFlow</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Mobile menu =====
+    document.getElementById('menuBtn').addEventListener('click', function() {
+      document.getElementById('mobileDrawer').classList.toggle('open')
+    })
+
+    // ===== Course data =====
+    const courses = [
+      {
+        number: 1,
+        title: 'Open Source',
+        tagline: 'Select, deploy, and govern open source AI models',
+        description: 'Open source software is the foundation of modern AI. This course covers how to effectively use, contribute to, and govern open source AI tools and frameworks in an enterprise context.',
+        level: 'All Levels',
+        duration: '4 hours',
+        modules: 6,
+        topics: [
+          'Free to use, modify, and distribute — no vendor lock-in',
+          'Community-driven innovation and transparent development',
+          'Lower total cost of ownership vs proprietary alternatives',
+          'Ecosystem deep-dive: Linux, Python, TensorFlow, Llama, and more',
+          'Security, licensing, and maintenance considerations',
+          'Building internal expertise for open source governance',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="4"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>`,
+      },
+      {
+        number: 2,
+        title: 'Using APIs',
+        tagline: 'Connect any service through REST, GraphQL, or Webhooks',
+        description: 'APIs are the connective tissue of modern applications. Learn how to integrate AI capabilities, payment systems, messaging, and data services through well-architected API patterns.',
+        level: 'Intermediate',
+        duration: '6 hours',
+        modules: 6,
+        topics: [
+          'Software-to-software communication fundamentals',
+          'REST, GraphQL, and Webhooks — choosing the right pattern',
+          'Authentication with API keys, tokens, and OAuth',
+          'Rate limiting, pagination, and error handling best practices',
+          'Integrating AI, payments, data, and messaging services',
+          'API lifecycle management and versioning strategies',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+      },
+      {
+        number: 3,
+        title: 'Claude Skills',
+        tagline: 'Design reusable prompts and instruction sets',
+        description: 'Claude Skills are reusable prompt templates that encode specific expertise. This course teaches you to design, save, share, and orchestrate skills for maximum productivity.',
+        level: 'Intermediate',
+        duration: '5 hours',
+        modules: 6,
+        topics: [
+          'Reusable, task-specific prompts and instruction sets',
+          'Saving, sharing, and triggering skills by name',
+          'Use cases: summarize email, analyze sentiment, draft legal clauses',
+          'Combining multiple skills into composable workflows',
+          'Skill design patterns for consistency and reliability',
+          'Deployment via API and chat interface',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+      },
+      {
+        number: 5,
+        title: 'Workflow Automation',
+        tagline: 'Eliminate manual handoffs at scale',
+        description: 'Connect your tools and automate repetitive workflows. From low-code platforms to custom scripting, learn to design automation that scales across your organization.',
+        level: 'Intermediate',
+        duration: '8 hours',
+        modules: 6,
+        topics: [
+          'Connecting tools: Slack, Gmail, CRM, databases, and APIs',
+          'Platforms: Zapier, Make, n8n, and custom automation scripts',
+          'The trigger + action = automation step paradigm',
+          'Eliminating manual data entry and cross-system handoffs',
+          'Real-world patterns: approvals, alerts, data syncs, report generation',
+          'Error handling, monitoring, and recovery in automated pipelines',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+      },
+      {
+        number: 6,
+        title: 'Prompt Guardrails',
+        tagline: 'Deploy AI with safety and control',
+        description: 'Prevent harmful, off-topic, or policy-violating AI outputs. This course covers system prompt design, moderation layers, and output filtering for customer-facing and regulated environments.',
+        level: 'Advanced',
+        duration: '5 hours',
+        modules: 6,
+        topics: [
+          'Preventing harmful, off-topic, and policy-violating outputs',
+          'System prompt design to define behavioral boundaries',
+          'Blocking PII leakage, profanity, and unauthorized actions',
+          'Implementing moderation layers and output filters',
+          'Red-teaming and adversarial testing of guardrails',
+          'Critical for customer-facing and regulated use cases',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+      },
+      {
+        number: 7,
+        title: 'Best Practices MCP/API',
+        tagline: 'Production-grade AI integration patterns',
+        description: 'Build reliable, secure, and observable AI integrations. Covering everything from secret management to circuit breakers, this course ensures your AI infrastructure is production-ready.',
+        level: 'Advanced',
+        duration: '6 hours',
+        modules: 6,
+        topics: [
+          'Environment variables and secure secret management',
+          'Retry logic with exponential backoff and jitter',
+          'Input validation and output escaping for safety',
+          'Logging and monitoring (anonymized for privacy)',
+          'Setting timeouts and circuit breakers',
+          'Model Context Protocol (MCP): architecture, tools, and patterns',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+      },
+      {
+        number: 9,
+        title: 'AI Strategy',
+        tagline: 'Align AI initiatives with business outcomes',
+        description: 'Move from experimenting with AI to executing a coherent strategy. Learn to prioritize use cases, choose build-vs-buy, govern risk, and lead organizational change.',
+        level: 'All Levels',
+        duration: '8 hours',
+        modules: 6,
+        topics: [
+          'Aligning AI use cases with business goals: cost, revenue, experience',
+          'Prioritizing high-volume, repetitive tasks for maximum ROI',
+          'Build vs buy: evaluating open source vs commercial models',
+          'Data privacy, bias mitigation, and compliance governance',
+          'Skills development and change management for AI adoption',
+          'Measuring AI maturity and building a multi-year roadmap',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+      },
+      {
+        number: 10,
+        title: 'AI Agents in Your Business',
+        tagline: 'Deploy autonomous systems that act',
+        description: 'AI agents are autonomous systems that execute tasks end-to-end. This course covers agent architecture, tool integration, memory systems, and safe deployment with human oversight.',
+        level: 'Advanced',
+        duration: '10 hours',
+        modules: 6,
+        topics: [
+          'Autonomous systems that act, not just generate text',
+          'Use cases: customer support, lead qualification, meeting scheduling',
+          'Architecture: combining LLM + tools + memory + permissions',
+          'Starting with human-in-the-loop for risk management',
+          'Measuring success by task completion, not conversation quality',
+          'Scaling agents across departments safely and effectively',
+        ],
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+      },
+    ]
+
+    // ===== Render courses =====
+    const grid = document.getElementById('coursesGrid')
+
+    courses.forEach((course, index) => {
+      const card = document.createElement('div')
+      card.className = 'glass-card course-card'
+
+      card.innerHTML = `
+        <div class="course-card-header">
+          <div class="course-card-icon">
+            ${course.icon}
+          </div>
+          <div>
+            <div class="course-meta-top">
+              <span class="course-number">${String(course.number).padStart(2, '0')}</span>
+              <span class="badge">${course.level}</span>
+            </div>
+            <h3>${course.title}</h3>
+          </div>
+        </div>
+        <p class="course-tagline">${course.tagline}</p>
+        <div class="course-meta-bottom">
+          <span>${course.duration}</span>
+          <span class="sep"></span>
+          <span>${course.modules} modules</span>
+        </div>
+        <div class="course-description">${course.description}</div>
+        <div class="course-topics">
+          <div class="course-topics-list">
+            ${course.topics.map((t, i) => `
+              <div class="topic-item">
+                <span class="num">${i + 1}</span>
+                <span>${t}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <button class="expand-btn" aria-label="Toggle curriculum">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          View curriculum
+        </button>
+      `
+
+      const btn = card.querySelector('.expand-btn')
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation()
+        card.classList.toggle('expanded')
+        btn.textContent = card.classList.contains('expanded') ? 'Hide curriculum' : 'View curriculum'
+      })
+
+      grid.appendChild(card)
+    })
+  </script>
+</body>
+</html>

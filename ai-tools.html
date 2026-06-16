@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open Source AI Tools — LogicFlow</title>
+  <meta name="description" content="Curated directory of free and open source AI tools — automation platforms, local LLMs, developer tooling, and AI interfaces. Includes install guides for Activepieces, Claude Code, n8n, Ollama, and more." />
+  <meta property="og:title" content="Open Source AI Tools — LogicFlow" />
+  <meta property="og:description" content="Curated directory of free and open source AI tools — automation platforms, local LLMs, developer tooling, and AI interfaces." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Open Source AI Tools — LogicFlow" />
+  <meta name="twitter:description" content="Free and open source AI tools directory with install guides." />
+  <link rel="icon" href="lf_icon.png" sizes="any" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0a0a0b;
+      color: #e4e4e7;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    ul { list-style: none; }
+    pre, code { font-family: 'JetBrains Mono', monospace; }
+
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --background: #0a0a0b;
+      --foreground: #e4e4e7;
+      --muted-foreground: #a1a1aa;
+      --card-bg: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --primary: #06b6d4;
+      --primary-hover: #22d3ee;
+      --secondary: rgba(255,255,255,0.05);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* ===== UTILITY ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .gradient-text {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    /* ===== GRID BACKGROUND ===== */
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ===== GLASS CARD ===== */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    /* ===== BADGE ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 10px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      white-space: nowrap;
+      color: var(--muted-foreground);
+    }
+
+    .badge-cyan {
+      background: rgba(6,182,212,0.1);
+      color: #06b6d4;
+      border-color: rgba(6,182,212,0.2);
+    }
+    .badge-purple {
+      background: rgba(139,92,246,0.1);
+      color: #8b5cf6;
+      border-color: rgba(139,92,246,0.2);
+    }
+    .badge-green {
+      background: rgba(34,197,94,0.1);
+      color: #22c55e;
+      border-color: rgba(34,197,94,0.2);
+    }
+    .badge-orange {
+      background: rgba(249,115,22,0.1);
+      color: #f97316;
+      border-color: rgba(249,115,22,0.2);
+    }
+    .badge-pink {
+      background: rgba(236,72,153,0.1);
+      color: #ec4899;
+      border-color: rgba(236,72,153,0.2);
+    }
+    .badge-yellow {
+      background: rgba(234,179,8,0.1);
+      color: #eab308;
+      border-color: rgba(234,179,8,0.2);
+    }
+
+    .neon-glow {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 40px rgba(6, 182, 212, 0.05);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(2px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+    .btn-icon:hover { color: var(--foreground); background: rgba(255,255,255,0.05); }
+
+    /* ================================================================
+       HEADER
+    ================================================================ */
+    header {
+      position: fixed;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 11, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-links a {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--muted-foreground);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--foreground); }
+    .nav-links a.active { color: var(--primary); }
+    .nav-mobile-btn {
+      display: none;
+      width: 32px;
+      height: 32px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--foreground);
+      cursor: pointer;
+    }
+    .mobile-drawer {
+      display: none;
+      background: var(--background);
+      border-top: 1px solid var(--border);
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+    }
+    .mobile-drawer.open { display: block; }
+    .mobile-drawer a {
+      display: block;
+      padding: 16px 24px;
+      color: var(--muted-foreground);
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .mobile-drawer a:hover { color: var(--foreground); }
+
+    /* ================================================================
+       HERO
+    ================================================================ */
+    .tools-hero {
+      padding: 160px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .tools-hero .glow-1 {
+      position: absolute;
+      left: 15%;
+      top: 5%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba(6, 182, 212, 0.07);
+      filter: blur(140px);
+      pointer-events: none;
+    }
+    .tools-hero .glow-2 {
+      position: absolute;
+      right: 15%;
+      bottom: 0;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.07);
+      filter: blur(130px);
+      pointer-events: none;
+    }
+    .tools-hero h1 {
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .tools-hero p {
+      max-width: 640px;
+      margin: 0 auto 32px;
+      font-size: 17px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+    }
+    .tools-hero .tool-count {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted-foreground);
+      margin-bottom: 24px;
+    }
+
+    /* ================================================================
+       CATEGORY NAV
+    ================================================================ */
+    .category-nav {
+      padding: 0 24px 48px;
+      position: sticky;
+      top: 64px;
+      z-index: 40;
+      background: rgba(10,10,11,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .category-nav-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 16px 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .category-nav a {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--secondary);
+      color: var(--muted-foreground);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .category-nav a:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+      color: var(--foreground);
+    }
+
+    /* ================================================================
+       TOOLS SECTION
+    ================================================================ */
+    .tools-section {
+      padding: 64px 0;
+    }
+    .tools-section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .tools-section-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .tools-section-icon svg { width: 18px; height: 18px; }
+    .tools-section-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .tools-section-sub {
+      color: var(--muted-foreground);
+      font-size: 15px;
+      margin-bottom: 32px;
+      margin-left: 48px;
+    }
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin: 0 0 40px 0;
+    }
+
+    /* ===== TOOL CARDS ===== */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .tool-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .tool-card:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.08);
+    }
+    .tool-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .tool-card-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .tool-card-icon svg { width: 22px; height: 22px; }
+    .tool-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .tool-card p {
+      font-size: 13px;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      flex: 1;
+    }
+    .tool-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .tool-install {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .tool-install-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+      margin-bottom: 8px;
+    }
+    .tool-install code {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.4);
+      font-size: 12px;
+      line-height: 1.5;
+      color: #a1f4ff;
+      word-break: break-all;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .tool-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tool-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      transition: color 0.2s;
+    }
+    .tool-links a svg { width: 12px; height: 12px; transition: transform 0.2s; }
+    .tool-links a:hover { color: var(--primary-hover); }
+    .tool-links a:hover svg { transform: translateX(2px); }
+    .tool-links .sep {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--border);
+      align-self: center;
+    }
+
+    /* ===== FEATURED TOOL (larger hero card) ===== */
+    .featured-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .featured-card-left { display: flex; flex-direction: column; justify-content: center; }
+    .featured-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--primary);
+    }
+    .featured-card-badge svg { width: 14px; height: 14px; }
+    .featured-card h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .featured-card p {
+      font-size: 14px;
+      color: var(--muted-foreground);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .featured-card .tool-tags { margin-bottom: 0; }
+    .featured-card-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+    }
+    .featured-card-right .install-block {
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      padding: 16px;
+    }
+    .featured-card-right .install-block-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-foreground);
+      margin-bottom: 8px;
+    }
+    .featured-card-right .install-block code {
+      display: block;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #a1f4ff;
+    }
+    .featured-card-right .install-block code .comment {
+      color: #6b7280;
+    }
+
+    /* ================================================================
+       CTA BANNER
+    ================================================================ */
+    .cta-banner {
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .cta-banner-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .cta-banner h2 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .cta-banner p {
+      color: var(--muted-foreground);
+      font-size: 15px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ================================================================
+       FOOTER
+    ================================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    footer .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) {
+      footer .footer-inner { flex-direction: row; justify-content: space-between; }
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+    .footer-socials { display: flex; align-items: center; gap: 16px; }
+    .footer-divider { width: 1px; height: 16px; background: var(--border); }
+
+    /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+    @media (max-width: 1023px) {
+      .tool-grid { grid-template-columns: repeat(2, 1fr); }
+      .featured-card { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .nav-mobile-btn { display: flex; }
+
+      .tools-hero { padding: 120px 16px 48px; }
+      .tools-hero h1 { font-size: 32px; }
+
+      .tool-grid { grid-template-columns: 1fr; }
+      .tools-section-title { font-size: 22px; }
+      .tools-section-sub { margin-left: 0; }
+      .featured-card { padding: 20px; }
+      .featured-card h2 { font-size: 22px; }
+
+      .cta-banner h2 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body class="bg-grid">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <nav class="container">
+      <a href="index.html" class="logo">
+        <img src="lf_icon.png" alt="LogicFlow" style="height:28px;width:auto;">
+        <span class="gradient-text">LogicFlow</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="education.html">Education</a>
+        <a href="ai-tools.html" class="active">AI Tools</a>
+        <a href="resources.html">Resources</a>
+      </div>
+      <button class="nav-mobile-btn" id="menuBtn" aria-label="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+      </button>
+      <div class="mobile-drawer" id="mobileDrawer">
+        <a href="index.html">Home</a>
+        <a href="education.html">Education</a>
+        <a href="ai-tools.html" style="color:var(--foreground);">AI Tools</a>
+        <a href="resources.html">Resources</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="tools-hero">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="container" style="position:relative;z-index:1;">
+      <span class="mono-label">// open source ai tools</span>
+      <h1>Free &amp; Open Source <span class="gradient-text">AI Tools</span></h1>
+      <p>
+        A curated directory of powerful open source AI tools you can install, self-host, and extend.
+        No paywalls, no vendor lock-in — just production-grade software backed by vibrant communities.
+      </p>
+      <p class="tool-count">11 tools. One-click install guides. 100% free.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+        <a href="#automation" class="btn-primary neon-glow" style="text-decoration:none;">
+          Browse Tools
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#activepieces" class="btn-secondary" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg>
+          Featured: Activepieces
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STICKY CATEGORY NAV ===== -->
+  <nav class="category-nav" id="categoryNav">
+    <div class="category-nav-inner">
+      <a href="#automation">Automation</a>
+      <a href="#local-ai">Local AI</a>
+      <a href="#dev-tools">Developer Tools</a>
+      <a href="#ai-interfaces">AI Interfaces</a>
+      <a href="#models">Models &amp; Hubs</a>
+    </div>
+  </nav>
+
+  <!-- ================================================================
+       AUTOMATION & WORKFLOW
+  ================================================================ -->
+  <section class="tools-section" id="automation">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="tools-section-header">
+        <div class="tools-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h2 class="tools-section-title">Automation &amp; Workflow</h2>
+      </div>
+      <p class="tools-section-sub">Open source platforms for building automated workflows, pipelines, and integrations — no vendor lock-in.</p>
+
+      <!-- === Activepieces — featured === -->
+      <div class="glass-card featured-card" id="activepieces">
+        <div class="featured-card-left">
+          <span class="featured-card-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Featured
+          </span>
+          <h2 class="gradient-text">Activepieces</h2>
+          <p>
+            The open source alternative to Zapier and Make. Build powerful automation workflows with a visual drag-and-drop editor,
+            connect 200+ integrations, and self-host on your own infrastructure. Zero per-operation costs.
+          </p>
+          <div class="tool-tags">
+            <span class="badge badge-cyan">Workflow</span>
+            <span class="badge badge-purple">200+ Integrations</span>
+            <span class="badge badge-green">Self-Hosted</span>
+            <span class="badge badge-yellow">TypeScript</span>
+          </div>
+          <div style="margin-top:16px;">
+            <a href="https://github.com/activepieces/activepieces" target="_blank" class="btn-primary" style="text-decoration:none;">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="featured-card-right">
+          <div class="install-block">
+            <div class="install-block-label">// Docker (recommended)</div>
+            <code>docker run -d --name activepieces -p 8080:80<br>  ghcr.io/activepieces/activepieces:latest</code>
+          </div>
+          <div class="install-block">
+            <div class="install-block-label">// npm (local dev)</div>
+            <code>npx create-activepieces@latest my-project<br>cd my-project &amp;&amp; npm run start</code>
+          </div>
+          <div class="install-block">
+            <div class="install-block-label">// Quick start URL</div>
+            <code><span class="comment"># Open in browser after install:</span><br>open http://localhost:8080</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-grid">
+        <!-- n8n -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <span class="badge badge-green">Automation</span>
+          </div>
+          <h3>n8n</h3>
+          <p>Fair-code workflow automation platform with 400+ integrations, a visual editor, and advanced branching logic. Self-host or use n8n cloud.</p>
+          <div class="tool-tags">
+            <span class="badge">Node-based</span>
+            <span class="badge">400+ Integrations</span>
+            <span class="badge">TypeScript</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>docker run -it --rm --name n8n -p 5678:5678<br>  n8nio/n8n</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/n8n-io/n8n" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://n8n.io" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- Dify -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <span class="badge badge-purple">LLM Platform</span>
+          </div>
+          <h3>Dify</h3>
+          <p>Open-source LLM app development platform with visual orchestration, RAG pipeline, agent capabilities, and model management across providers.</p>
+          <div class="tool-tags">
+            <span class="badge">RAG</span>
+            <span class="badge">Agents</span>
+            <span class="badge">Visual Builder</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>git clone https://github.com/langgenius/dify.git<br>cd dify/docker &amp;&amp; docker compose up -d</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/langgenius/dify" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://dify.ai" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- Temporal -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <span class="badge badge-orange">Orchestration</span>
+          </div>
+          <h3>Temporal</h3>
+          <p>Reliable distributed workflow orchestration platform. Used by Netflix, Snap, and Stripe for mission-critical async workflows with durable execution.</p>
+          <div class="tool-tags">
+            <span class="badge">Durable Execution</span>
+            <span class="badge">Go/TS/Java/Python</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>docker compose -f https://temporal.io/docker-compose.yml up</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/temporalio/temporal" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://temporal.io" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       LOCAL AI
+  ================================================================ -->
+  <section class="tools-section" id="local-ai">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="tools-section-header">
+        <div class="tools-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 3.5-2 6.5-5 8l-5 4-5-4c-3-1.5-5-4.5-5-8A10 10 0 0 1 12 2z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h2 class="tools-section-title">Local AI &amp; Models</h2>
+      </div>
+      <p class="tools-section-sub">Run AI models on your own hardware — no cloud dependency, no data leaving your machine, no API costs.</p>
+      <div class="tool-grid">
+
+        <!-- Ollama -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+            </div>
+            <span class="badge badge-cyan">Local LLM</span>
+          </div>
+          <h3>Ollama</h3>
+          <p>Run Llama 3, Mistral, Gemma, and 100+ other open models locally. One command install, OpenAI-compatible API, GPU acceleration built in.</p>
+          <div class="tool-tags">
+            <span class="badge">One-Command</span>
+            <span class="badge">100+ Models</span>
+            <span class="badge">GPU</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>curl -fsSL https://ollama.com/install.sh | sh<br>ollama run llama3.2</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/ollama/ollama" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://ollama.com" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- LocalAI -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <span class="badge badge-green">API Server</span>
+          </div>
+          <h3>LocalAI</h3>
+          <p>Drop-in OpenAI API replacement for local models. Run LLMs, image generation, audio transcription, and text-to-speech — all self-hosted.</p>
+          <div class="tool-tags">
+            <span class="badge">OpenAI-Compatible</span>
+            <span class="badge">Multi-Modal</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>docker run -p 8080:8080 -v $PWD/models:/models<br>  quay.io/go-skynet/local-ai:latest</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/mudler/LocalAI" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://localai.io" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- ComfyUI -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </div>
+            <span class="badge badge-pink">Image Gen</span>
+          </div>
+          <h3>ComfyUI</h3>
+          <p>Powerful node-based workflow UI for Stable Diffusion. Build complex image generation pipelines with a visual graph editor. Modular, extensible, GPU-optimized.</p>
+          <div class="tool-tags">
+            <span class="badge">Node-Based</span>
+            <span class="badge">Stable Diffusion</span>
+            <span class="badge">GPU</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>git clone https://github.com/comfyanonymous/ComfyUI.git<br>cd ComfyUI &amp;&amp; pip install -r requirements.txt<br>python main.py</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/comfyanonymous/ComfyUI" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       DEVELOPER TOOLS
+  ================================================================ -->
+  <section class="tools-section" id="dev-tools">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="tools-section-header">
+        <div class="tools-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h2 class="tools-section-title">Developer Tools &amp; Agents</h2>
+      </div>
+      <p class="tools-section-sub">AI-powered developer tooling for coding, testing, and building AI agents — all open source and free to use.</p>
+
+      <!-- === Claude Code — featured === -->
+      <div class="glass-card featured-card" id="claude-code">
+        <div class="featured-card-left">
+          <span class="featured-card-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Featured
+          </span>
+          <h2 class="gradient-text">Claude Code</h2>
+          <p>
+            Anthropic's agentic coding tool running directly in your terminal. Claude Code reads your codebase, makes edits,
+            runs commands, and handles complex multi-file refactors — all through natural language conversation.
+            <strong>Free tier available</strong> — pay-as-you-go API pricing with no monthly commitment.
+          </p>
+          <div class="tool-tags">
+            <span class="badge badge-cyan">Agentic</span>
+            <span class="badge badge-purple">Terminal-Based</span>
+            <span class="badge badge-green">Free Tier</span>
+            <span class="badge badge-orange">Multi-File</span>
+          </div>
+          <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;">
+            <a href="https://claude.ai/code" target="_blank" class="btn-primary" style="text-decoration:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Get Claude Code
+            </a>
+            <a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" class="btn-secondary" style="text-decoration:none;">Documentation</a>
+          </div>
+        </div>
+        <div class="featured-card-right">
+          <div class="install-block">
+            <div class="install-block-label">// Install via npm</div>
+            <code>npm install -g @anthropic-ai/claude-code</code>
+          </div>
+          <div class="install-block">
+            <div class="install-block-label">// Use in any project</div>
+            <code><span class="comment"># Navigate to your project and start a session:</span><br>cd my-project &amp;&amp; claude</code>
+          </div>
+          <div class="install-block">
+            <div class="install-block-label">// Pricing</div>
+            <code><span class="comment"># Free tier: pay-as-you-go via API</span><br><span class="comment"># Claude Sonnet / Opus / Haiku — no monthly fee</span><br>open https://claude.ai/code</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-grid">
+
+        <!-- LangFlow -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <span class="badge badge-purple">Visual Builder</span>
+          </div>
+          <h3>LangFlow</h3>
+          <p>Visual framework for building multi-agent RAG applications. Drag-and-drop LangChain components into deployable AI pipelines.</p>
+          <div class="tool-tags">
+            <span class="badge">RAG</span>
+            <span class="badge">LangChain</span>
+            <span class="badge">Multi-Agent</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>pip install langflow<br>python -m langflow run</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/langflow-ai/langflow" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://langflow.org" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- CrewAI -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span class="badge badge-orange">Agent Framework</span>
+          </div>
+          <h3>CrewAI</h3>
+          <p>Orchestrate role-based AI agents that collaborate on complex tasks. Define agents, assign tools, and let them work together autonomously.</p>
+          <div class="tool-tags">
+            <span class="badge">Multi-Agent</span>
+            <span class="badge">Role-Based</span>
+            <span class="badge">Python</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>pip install crewai crewai-tools<br>crewai create my-agent-crew</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/crewAIInc/crewAI" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://crewai.com" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- OpenHands (formerly OpenDevin) -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <span class="badge badge-cyan">Coding Agent</span>
+          </div>
+          <h3>OpenHands</h3>
+          <p>AI-powered software development agent that writes code, runs commands, uses a browser, and builds apps from natural language requests.</p>
+          <div class="tool-tags">
+            <span class="badge">Code Generation</span>
+            <span class="badge">Browser Use</span>
+            <span class="badge">Docker</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>docker pull ghcr.io/openhands-ai/openhands:latest<br>docker run -p 3000:3000 ghcr.io/openhands-ai/openhands</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/All-Hands-AI/OpenHands" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://all-hands.dev" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       AI INTERFACES
+  ================================================================ -->
+  <section class="tools-section" id="ai-interfaces">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="tools-section-header">
+        <div class="tools-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <h2 class="tools-section-title">AI Interfaces &amp; Platforms</h2>
+      </div>
+      <p class="tools-section-sub">Self-hosted frontends and platforms for interacting with AI models through chat, APIs, and custom interfaces.</p>
+      <div class="tool-grid">
+
+        <!-- Open WebUI -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <span class="badge badge-cyan">Chat UI</span>
+          </div>
+          <h3>Open WebUI</h3>
+          <p>Feature-rich self-hosted chat interface for LLMs. Supports Ollama, OpenAI, RAG, multi-user, file uploads, web search, and tool calls.</p>
+          <div class="tool-tags">
+            <span class="badge">Ollama</span>
+            <span class="badge">RAG</span>
+            <span class="badge">Multi-User</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>docker run -d -p 3000:8080 --name open-webui<br>  --restart always ghcr.io/open-webui/open-webui:main</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/open-webui/open-webui" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://openwebui.com" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- LibreChat -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <span class="badge badge-purple">Multi-Provider</span>
+          </div>
+          <h3>LibreChat</h3>
+          <p>Open-source ChatGPT alternative that connects to any AI provider — OpenAI, Anthropic, Ollama, Azure, and more. Presets, plugins, and multi-user.</p>
+          <div class="tool-tags">
+            <span class="badge">Multi-Model</span>
+            <span class="badge">Plugins</span>
+            <span class="badge">Presets</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>git clone https://github.com/danny-avila/LibreChat.git<br>cd LibreChat &amp;&amp; docker compose up</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/danny-avila/LibreChat" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://librechat.ai" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       MODELS & HUBS
+  ================================================================ -->
+  <section class="tools-section" id="models">
+    <div class="container">
+      <hr class="section-divider">
+      <div class="tools-section-header">
+        <div class="tools-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 3.5-2 6.5-5 8l-5 4-5-4c-3-1.5-5-4.5-5-8A10 10 0 0 1 12 2z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h2 class="tools-section-title">Models &amp; Hubs</h2>
+      </div>
+      <p class="tools-section-sub">Community hubs and registries for discovering, sharing, and downloading open source AI models.</p>
+      <div class="tool-grid">
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M4 20V4"/><path d="M8 12h.01"/><path d="M12 8h.01"/><path d="M8 16h.01"/><path d="M16 10h.01"/><path d="M12 12h.01"/><path d="M16 14h.01"/><path d="M12 16h.01"/></svg>
+            </div>
+            <span class="badge badge-yellow">Model Hub</span>
+          </div>
+          <h3>Hugging Face</h3>
+          <p>The world's largest open source AI model hub. 500k+ models, datasets, and Spaces demos. Fine-tune, share, and deploy with the HF ecosystem.</p>
+          <div class="tool-tags">
+            <span class="badge">500k+ Models</span>
+            <span class="badge">Transformers</span>
+            <span class="badge">Spaces</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>pip install transformers datasets<br>python -c "from transformers import pipeline; ..."</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/huggingface" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://huggingface.co" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <span class="badge badge-orange">Open Models</span>
+          </div>
+          <h3>OpenRouter</h3>
+          <p>Unified API gateway for 200+ models including open source (Llama, Mistral, DeepSeek) and commercial (GPT, Claude, Gemini). Pay per-token, no subscription.</p>
+          <div class="tool-tags">
+            <span class="badge">200+ Models</span>
+            <span class="badge">Unified API</span>
+            <span class="badge">Pay-Per-Token</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Quick Start</div>
+            <code>curl https://openrouter.ai/api/v1/chat/completions \<br>  -H "Authorization: Bearer $OPENROUTER_API_KEY" \<br>  -d '{"model":"mistralai/mixtral-8x7b", ...}'</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://openrouter.ai" target="_blank">Website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+
+        <!-- vLLM -->
+        <div class="glass-card tool-card">
+          <div class="tool-card-top">
+            <div class="tool-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <span class="badge badge-green">Inference Engine</span>
+          </div>
+          <h3>vLLM</h3>
+          <p>High-throughput LLM inference engine with PagedAttention. Serves models at 10-20x the throughput of standard implementations.</p>
+          <div class="tool-tags">
+            <span class="badge">High-Throughput</span>
+            <span class="badge">PagedAttention</span>
+            <span class="badge">OpenAI API</span>
+          </div>
+          <div class="tool-install">
+            <div class="tool-install-label">Install</div>
+            <code>pip install vllm<br>python -m vllm.entrypoints.openai.api_server \<br>  --model mistralai/Mistral-7B-Instruct-v0.3</code>
+          </div>
+          <div class="tool-links">
+            <a href="https://github.com/vllm-project/vllm" target="_blank">GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <span class="sep"></span>
+            <a href="https://vllm.readthedocs.io" target="_blank">Docs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="cta-banner">
+    <div class="cta-banner-inner">
+      <h2>Want to go deeper? <span class="gradient-text">Learn with us</span></h2>
+      <p>These tools are just the beginning. Our courses cover open source AI, API integration, workflow automation, and deploying AI agents in your business.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+        <a href="education.html" class="btn-primary neon-glow" style="text-decoration:none;height:48px;padding:0 28px;font-size:15px;">
+          Browse Courses
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="resources.html" class="btn-secondary" style="text-decoration:none;height:48px;padding:0 28px;font-size:15px;">
+          Free Resources
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <p style="display:flex;align-items:center;gap:8px;">
+        <img src="lf_icon.png" alt="" style="height:16px;width:auto;">
+        &copy; 2026 LogicFlow. All rights reserved.
+      </p>
+      <div class="footer-socials">
+        <a href="education.html" style="font-family:var(--font-mono);font-size:12px;color:var(--muted-foreground);transition:color 0.2s;text-decoration:none;">Education</a>
+        <div class="footer-divider"></div>
+        <a href="index.html" style="font-family:var(--font-mono);font-size:12px;color:var(--muted-foreground);transition:color 0.2s;text-decoration:none;">Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('mobileDrawer');
+    if (menuBtn && drawer) {
+      menuBtn.addEventListener('click', function() {
+        drawer.classList.toggle('open');
+      });
+      drawer.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          drawer.classList.remove('open');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

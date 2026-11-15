@@ -1,0 +1,406 @@
+{
+ "url": "http://127.0.0.1:5300/index.html",
+ "views": {
+  "desktop": {
+   "width": 1440,
+   "height": 900,
+   "navH": 73,
+   "scrollHeight": 8380,
+   "screens": 9.31,
+   "sections": [
+    {
+     "n": 1,
+     "tag": "section",
+     "id": "",
+     "cls": "hero",
+     "top": 0,
+     "h": 900,
+     "hScreens": 1,
+     "offGrid": 0,
+     "tiles": [
+      {
+       "file": "desktop-sec-01-a.jpg",
+       "scrollY": 0
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "section",
+     "id": "how",
+     "cls": "band",
+     "top": 900,
+     "h": 584,
+     "hScreens": 0.65,
+     "offGrid": 584,
+     "tiles": [
+      {
+       "file": "desktop-sec-02-a.jpg",
+       "scrollY": 900
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "tag": "section",
+     "id": "ai",
+     "cls": "band ai",
+     "top": 1484,
+     "h": 909,
+     "hScreens": 1.01,
+     "offGrid": 9,
+     "tiles": [
+      {
+       "file": "desktop-sec-03-a.jpg",
+       "scrollY": 1484
+      },
+      {
+       "file": "desktop-sec-03-b.jpg",
+       "scrollY": 1493
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "tag": "section",
+     "id": "invoices",
+     "cls": "product",
+     "top": 2393,
+     "h": 1187,
+     "hScreens": 1.32,
+     "offGrid": 287,
+     "tiles": [
+      {
+       "file": "desktop-sec-04-a.jpg",
+       "scrollY": 2393
+      },
+      {
+       "file": "desktop-sec-04-b.jpg",
+       "scrollY": 2680
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "tag": "section",
+     "id": "tour",
+     "cls": "band tour",
+     "top": 3580,
+     "h": 1032,
+     "hScreens": 1.15,
+     "offGrid": 132,
+     "tiles": [
+      {
+       "file": "desktop-sec-05-a.jpg",
+       "scrollY": 3580
+      },
+      {
+       "file": "desktop-sec-05-b.jpg",
+       "scrollY": 3712
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "tag": "section",
+     "id": "orders",
+     "cls": "product",
+     "top": 4612,
+     "h": 1112,
+     "hScreens": 1.24,
+     "offGrid": 212,
+     "tiles": [
+      {
+       "file": "desktop-sec-06-a.jpg",
+       "scrollY": 4612
+      },
+      {
+       "file": "desktop-sec-06-b.jpg",
+       "scrollY": 4824
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "tag": "section",
+     "id": "products",
+     "cls": "band",
+     "top": 5724,
+     "h": 880,
+     "hScreens": 0.98,
+     "offGrid": 880,
+     "tiles": [
+      {
+       "file": "desktop-sec-07-a.jpg",
+       "scrollY": 5724
+      }
+     ]
+    },
+    {
+     "n": 8,
+     "tag": "section",
+     "id": "platform",
+     "cls": "platform",
+     "top": 6604,
+     "h": 848,
+     "hScreens": 0.94,
+     "offGrid": 848,
+     "tiles": [
+      {
+       "file": "desktop-sec-08-a.jpg",
+       "scrollY": 6604
+      }
+     ]
+    },
+    {
+     "n": 9,
+     "tag": "section",
+     "id": "contact",
+     "cls": "contact",
+     "top": 7452,
+     "h": 741,
+     "hScreens": 0.82,
+     "offGrid": 741,
+     "tiles": [
+      {
+       "file": "desktop-sec-09-a.jpg",
+       "scrollY": 7452
+      }
+     ]
+    },
+    {
+     "n": 10,
+     "tag": "footer",
+     "id": "",
+     "cls": "site-footer",
+     "top": 8193,
+     "h": 186,
+     "hScreens": 0.21,
+     "offGrid": 186,
+     "tiles": [
+      {
+       "file": "desktop-sec-10-a.jpg",
+       "scrollY": 7480,
+       "cutTop": 713,
+       "height": 186
+      }
+     ]
+    }
+   ],
+   "consoleErrors": []
+  },
+  "mobile": {
+   "width": 390,
+   "height": 844,
+   "navH": 73,
+   "scrollHeight": 12849,
+   "screens": 15.22,
+   "sections": [
+    {
+     "n": 1,
+     "tag": "section",
+     "id": "",
+     "cls": "hero",
+     "top": 0,
+     "h": 1148,
+     "hScreens": 1.36,
+     "offGrid": 304,
+     "tiles": [
+      {
+       "file": "mobile-sec-01-a.jpg",
+       "scrollY": 0
+      },
+      {
+       "file": "mobile-sec-01-b.jpg",
+       "scrollY": 304
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "section",
+     "id": "how",
+     "cls": "band",
+     "top": 1148,
+     "h": 1230,
+     "hScreens": 1.46,
+     "offGrid": 386,
+     "tiles": [
+      {
+       "file": "mobile-sec-02-a.jpg",
+       "scrollY": 1148
+      },
+      {
+       "file": "mobile-sec-02-b.jpg",
+       "scrollY": 1534
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "tag": "section",
+     "id": "ai",
+     "cls": "band ai",
+     "top": 2378,
+     "h": 1516,
+     "hScreens": 1.8,
+     "offGrid": 672,
+     "tiles": [
+      {
+       "file": "mobile-sec-03-a.jpg",
+       "scrollY": 2378
+      },
+      {
+       "file": "mobile-sec-03-b.jpg",
+       "scrollY": 3050
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "tag": "section",
+     "id": "invoices",
+     "cls": "product",
+     "top": 3894,
+     "h": 1479,
+     "hScreens": 1.75,
+     "offGrid": 635,
+     "tiles": [
+      {
+       "file": "mobile-sec-04-a.jpg",
+       "scrollY": 3894
+      },
+      {
+       "file": "mobile-sec-04-b.jpg",
+       "scrollY": 4529
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "tag": "section",
+     "id": "tour",
+     "cls": "band tour",
+     "top": 5373,
+     "h": 1374,
+     "hScreens": 1.63,
+     "offGrid": 530,
+     "tiles": [
+      {
+       "file": "mobile-sec-05-a.jpg",
+       "scrollY": 5373
+      },
+      {
+       "file": "mobile-sec-05-b.jpg",
+       "scrollY": 5903
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "tag": "section",
+     "id": "orders",
+     "cls": "product",
+     "top": 6746,
+     "h": 1419,
+     "hScreens": 1.68,
+     "offGrid": 575,
+     "tiles": [
+      {
+       "file": "mobile-sec-06-a.jpg",
+       "scrollY": 6746
+      },
+      {
+       "file": "mobile-sec-06-b.jpg",
+       "scrollY": 7321
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "tag": "section",
+     "id": "products",
+     "cls": "band",
+     "top": 8165,
+     "h": 1912,
+     "hScreens": 2.27,
+     "offGrid": 224,
+     "tiles": [
+      {
+       "file": "mobile-sec-07-a.jpg",
+       "scrollY": 8165
+      },
+      {
+       "file": "mobile-sec-07-b.jpg",
+       "scrollY": 9009
+      },
+      {
+       "file": "mobile-sec-07-c.jpg",
+       "scrollY": 9233
+      }
+     ]
+    },
+    {
+     "n": 8,
+     "tag": "section",
+     "id": "platform",
+     "cls": "platform",
+     "top": 10077,
+     "h": 1329,
+     "hScreens": 1.57,
+     "offGrid": 485,
+     "tiles": [
+      {
+       "file": "mobile-sec-08-a.jpg",
+       "scrollY": 10077
+      },
+      {
+       "file": "mobile-sec-08-b.jpg",
+       "scrollY": 10562
+      }
+     ]
+    },
+    {
+     "n": 9,
+     "tag": "section",
+     "id": "contact",
+     "cls": "contact",
+     "top": 11406,
+     "h": 1257,
+     "hScreens": 1.49,
+     "offGrid": 413,
+     "tiles": [
+      {
+       "file": "mobile-sec-09-a.jpg",
+       "scrollY": 11406
+      },
+      {
+       "file": "mobile-sec-09-b.jpg",
+       "scrollY": 11819
+      }
+     ]
+    },
+    {
+     "n": 10,
+     "tag": "footer",
+     "id": "",
+     "cls": "site-footer",
+     "top": 12663,
+     "h": 186,
+     "hScreens": 0.22,
+     "offGrid": 186,
+     "tiles": [
+      {
+       "file": "mobile-sec-10-a.jpg",
+       "scrollY": 12005,
+       "cutTop": 658,
+       "height": 186
+      }
+     ]
+    }
+   ],
+   "consoleErrors": []
+  }
+ },
+ "at": "2026-11-15T04:09:26.337Z"
+}
